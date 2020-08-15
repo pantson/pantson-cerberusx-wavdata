@@ -10,11 +10,36 @@ Function GetWavData:WavData(file:String)
 End
 
 Class WavData
+Public
+	Field millisecs:Int
 	Field length:Int
+	Field sample_rate:Int
+	Field channels:Int
+	Field bits_per_sample:Int
 
+Private	
 	Method New(file:String)
 		Local db:DataBuffer = DataBuffer.Load("cerberus://data/"+file)
+		If db=Null
+			#If COFIG="debug" Then Print "Unable to load wav file "+file
+			Return Null
+		End
+		' check header
+		If db.PeekString(0,4) <> "RIFF"
+			#If COFIG="debug" Then Print "Unable to load wav file "+file+". header is "+db.PeekString(0,4)+", not RIFF"
+			Return Null
+		End
+		
+		If db.Length < 44
+			#If COFIG="debug" Then Print "Invalid header in wav file "+file
+			Return Null
+		End
+		
 		Local sample_data_length:Int = db.PeekInt(40)
-		length = (sample_data_length*1000/db.PeekInt(28))
+		length = sample_data_length
+		millisecs = (sample_data_length*1000/db.PeekInt(28))
+		sample_rate = db.PeekInt(24)
+		channels = db.PeekByte(22)
+		bits_per_sample = db.PeekByte(34)
 	End
 End
