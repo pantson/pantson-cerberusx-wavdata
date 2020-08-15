@@ -1,0 +1,20 @@
+Strict
+
+Import brl.databuffer
+
+#WAVDATA_MODULE_LOADED="LOADED"
+
+Function GetWavData:WavData(file:String)
+	Local result:WavData = New WavData(file)
+	Return result
+End
+
+Class WavData
+	Field length:Int
+
+	Method New(file:String)
+		Local db:DataBuffer = DataBuffer.Load("cerberus://data/"+file)
+		Local sample_data_length:Int = db.PeekInt(40)
+		length = (sample_data_length*1000/db.PeekInt(28))
+	End
+End
