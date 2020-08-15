@@ -4,6 +4,11 @@ Import brl.databuffer
 
 #WAVDATA_MODULE_LOADED="LOADED"
 
+' WAV header info from here:
+' http://www.topherlee.com/software/pcm-tut-wavformat.html
+' http://soundfile.sapp.org/doc/WaveFormat/
+' https://en.wikipedia.org/wiki/WAV
+
 Function GetWavData:WavData(file:String)
 	Local result:WavData = New WavData(file)
 	Return result
@@ -22,21 +27,21 @@ Private
 		Local db:DataBuffer = DataBuffer.Load("cerberus://data/"+file)
 		If db=Null
 			#If CONFIG="debug"
-				Print "Unable to load wav file "+file
+				Print "Unable to load wav file: "+file
 			#End
 			Return
 		End
 		' check header
 		If db.PeekString(0,4) <> "RIFF"
 			#If CONFIG="debug"
-				Print "Unable to load wav file "+file+". header is "+db.PeekString(0,4)+", not RIFF"
+				Print "Unable to load wav file: "+file+". Header is "+db.PeekString(0,4)+", not RIFF"
 			#end
 			Return
 		End
 		
 		If db.Length < 44
 			#If CONFIG="debug"
-				Print "Invalid header in wav file "+file
+				Print "Invalid header in wav file: "+file
 			#End
 			Return
 		End
