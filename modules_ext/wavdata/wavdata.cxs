@@ -21,18 +21,24 @@ Private
 	Method New(file:String)
 		Local db:DataBuffer = DataBuffer.Load("cerberus://data/"+file)
 		If db=Null
-			#If COFIG="debug" Then Print "Unable to load wav file "+file
-			Return Null
+			#If CONFIG="debug"
+				Print "Unable to load wav file "+file
+			#End
+			Return
 		End
 		' check header
 		If db.PeekString(0,4) <> "RIFF"
-			#If COFIG="debug" Then Print "Unable to load wav file "+file+". header is "+db.PeekString(0,4)+", not RIFF"
-			Return Null
+			#If CONFIG="debug"
+				Print "Unable to load wav file "+file+". header is "+db.PeekString(0,4)+", not RIFF"
+			#end
+			Return
 		End
 		
 		If db.Length < 44
-			#If COFIG="debug" Then Print "Invalid header in wav file "+file
-			Return Null
+			#If CONFIG="debug"
+				Print "Invalid header in wav file "+file
+			#End
+			Return
 		End
 		
 		Local sample_data_length:Int = db.PeekInt(40)
