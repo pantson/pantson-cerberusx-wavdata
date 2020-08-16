@@ -1,6 +1,8 @@
 # Module wavdata
 
-Currently only supports WAV file in RIFF format
+Currently only supports WAV file in RIFF format.
+
+FYI: I use Audacity https://www.audacityteam.org/ to convert sounds to WAV format.
 
 <a name=".GetWavData"></a>
 ### Function GetWavData:WavData(file:String)
@@ -9,7 +11,18 @@ Currently only supports WAV file in RIFF format
 
 The WavData class.
 
-# Field length:Int
+# Field millisecs:Int
 
 The length in Millisecs of the WAV sample
+
+# Field length:Int
+
+The length in bytes of the sample data
+
+# Field sample_rate:Int
+
+# Field channels:Int
+
+# Field bits_per_sample:Int
+
 
